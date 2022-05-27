@@ -3,6 +3,7 @@ package de.unistuttgart.dsass2022.ex06.p2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class WeightedGraph<N,E> implements IWeightedGraph<N,E> {
 
@@ -20,13 +21,37 @@ public class WeightedGraph<N,E> implements IWeightedGraph<N,E> {
 	}
 	
 	
-	public void createFromEdgeList(ArrayList<Integer> list) throws UnsupportedOperationException{
-		
+	public void createFromEdgeList(ArrayList<Integer> list) throws UnsupportedOperationException {
+		int currentNodeIndex;
+		int lastNodeIndex = 0;
+
+		int numberOfNodes = list.get(1);
+		for (int i = 2; i < 2 + 3 * numberOfNodes; i = i + 3) {
+			currentNodeIndex = list.get(i);
+			if (currentNodeIndex != lastNodeIndex) {
+				for (int j = lastNodeIndex + 1; j <= currentNodeIndex; j++) {
+					addNode(j, null);
+				}
+			}
+			this.addEdge(currentNodeIndex, list.get(i + 1), list.get(i + 2));
+			lastNodeIndex = currentNodeIndex;
+		}
 	}
 	
 	
 	public ArrayList<Integer> toEdgeList(){
-		return null;
+		ArrayList<Integer> list = new ArrayList<>();
+		list.add(this.numNodes);
+		list.add(this.numEdges);
+
+		for (Map.Entry<Integer ,ArrayList<IEdge<E>>> adj: this.adjacencyList.entrySet()) {
+			for (IEdge<E> edge: adj.getValue()) {
+				list.add(edge.getSource());
+				list.add(edge.getDestination());
+				list.add((int) edge.getWeight());
+			}
+		}
+		return list;
 	}
 	
 	public void createFromNodeList(ArrayList<Integer> list) throws UnsupportedOperationException{
