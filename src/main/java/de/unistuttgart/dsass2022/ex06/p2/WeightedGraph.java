@@ -54,12 +54,42 @@ public class WeightedGraph<N,E> implements IWeightedGraph<N,E> {
 		return list;
 	}
 	
-	public void createFromNodeList(ArrayList<Integer> list) throws UnsupportedOperationException{
-		
+	public void createFromNodeList(ArrayList<Integer> list) throws UnsupportedOperationException {
+		int numberOfNodes = list.get(0);
+		int listIndex = 1;
+		int numberOfEdgesForCurrentNode;
+
+		for (int nodeIndex = 1; nodeIndex <= numberOfNodes; nodeIndex++) {
+			addNode(nodeIndex, null);
+			numberOfEdgesForCurrentNode = list.get(++listIndex);
+			if (numberOfEdgesForCurrentNode == 0) continue;
+			int startListIndex = listIndex;
+			while (listIndex < startListIndex + 2 * numberOfEdgesForCurrentNode) {
+				this.addEdge(nodeIndex, list.get(++listIndex), list.get(++listIndex));
+			}
+		}
 	}
 	
 	public ArrayList<Integer> toNodeList(){
-		return null;
+		ArrayList<Integer> list = new ArrayList<>();
+		list.add(this.numNodes);
+		list.add(this.numEdges);
+
+		int lastIndex = 0;
+		int currentIndex = 0;
+		for (Map.Entry<Integer ,ArrayList<IEdge<E>>> adj: this.adjacencyList.entrySet()) {
+			currentIndex = adj.getKey();
+			for (; lastIndex < currentIndex-1; lastIndex++) {
+				list.add(0);
+			}
+			list.add(adj.getValue().size());
+			for (IEdge<E> edge: adj.getValue()) {
+				list.add(edge.getDestination());
+				list.add((int) edge.getWeight());
+			}
+			lastIndex = currentIndex;
+		}
+		return list;
 	}
 	
 	@Override
