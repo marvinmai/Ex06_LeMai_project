@@ -22,6 +22,9 @@ public class WeightedGraph<N,E> implements IWeightedGraph<N,E> {
 	
 	
 	public void createFromEdgeList(ArrayList<Integer> list) throws UnsupportedOperationException {
+		if (list.isEmpty()) {
+			throw new IllegalArgumentException("Cannot create graph object from empty list.");
+		}
 		int currentNodeIndex;
 		int lastNodeIndex = 0;
 
@@ -55,6 +58,9 @@ public class WeightedGraph<N,E> implements IWeightedGraph<N,E> {
 	}
 	
 	public void createFromNodeList(ArrayList<Integer> list) throws UnsupportedOperationException {
+		if (list.isEmpty()) {
+			throw new IllegalArgumentException("Cannot create graph object from empty list.");
+		}
 		int numberOfNodes = list.get(0);
 		int listIndex = 1;
 		int numberOfEdgesForCurrentNode;

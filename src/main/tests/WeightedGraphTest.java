@@ -1,7 +1,6 @@
-package p3a;
-
 import de.unistuttgart.dsass2022.ex06.p2.WeightedGraph;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ public class WeightedGraphTest {
         assertEquals(getWeightedEdgeList(), testee);
     }
 
-     @Test
-     public void testNodeList() {
+    @Test
+    public void testNodeList() {
         ArrayList<Integer> list = getWeightedNodeList();
 
         WeightedGraph<Integer, Integer> graph = new WeightedGraph<>();
@@ -29,7 +28,19 @@ public class WeightedGraphTest {
         ArrayList<Integer> testee = graph.toNodeList();
 
         assertEquals(getWeightedNodeList(), testee);
-     }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmpty() {
+        ArrayList<Integer> list = new ArrayList<>();
+        WeightedGraph<Integer, Integer> graph = new WeightedGraph<>();
+        graph.createFromNodeList(list);
+        graph.createFromEdgeList(list);
+        ArrayList<Integer> edgeList = graph.toEdgeList();
+        ArrayList<Integer> nodeList = graph.toNodeList();
+        System.out.println(edgeList);
+        System.out.println(nodeList);
+    }
 
     private ArrayList<Integer> getWeightedNodeList() {
         ArrayList<Integer> list = new ArrayList<>();
